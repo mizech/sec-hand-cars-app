@@ -18,6 +18,9 @@ interface VendorDao {
     @Query("SELECT * FROM vendor")
     fun getVendorWithCars(): List<VendorWithCars>
 
+    @Query("SELECT count(*) FROM vendor")
+    fun getCountOfVendors(): Int
+
     @Query("SELECT * FROM vendor WHERE vid = :id")
     suspend fun getVendorByID(id: Long): Vendor
 

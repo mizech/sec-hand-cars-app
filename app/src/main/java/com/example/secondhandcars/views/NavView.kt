@@ -13,17 +13,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.secondhandcars.viewmodels.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 fun NavView(viewModel: MainViewModel) {
     val navController = rememberNavController()
@@ -54,11 +63,16 @@ fun NavView(viewModel: MainViewModel) {
                 }, onClick = {
                     navController.navigate(route = Routes.VendorsList.name)
                 })
-                DropdownMenuItem(text = {
-                    Text(text = "Create car")
-                }, onClick = {
-                    navController.navigate(route = Routes.CarForm.append(arg = ""))
-                })
+                if (viewModel.countOfVendors > 0) {
+                    println("Count if: ${viewModel.countOfVendors}")
+                    DropdownMenuItem(text = {
+                        Text(text = "Create car")
+                    }, onClick = {
+                        navController.navigate(route = Routes.CarForm.append(arg = ""))
+                    })
+                } else {
+                    println("Count else: ${viewModel.countOfVendors}")
+                }
                 DropdownMenuItem(text = {
                     Text(text = "Create vendor")
                 }, onClick = {
