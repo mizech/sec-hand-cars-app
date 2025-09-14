@@ -48,7 +48,7 @@ fun NavView(viewModel: MainViewModel) {
             }) {
                 Icon(Icons.Default.Menu,
                     contentDescription = "")
-            } // Todo: Check if at least 1 vendor exists. If that's the case then show 'Create car', otherwise don't.
+            }
             DropdownMenu(expanded = isActionMenuShown.value,
                 onDismissRequest = {
                     isActionMenuShown.value = false

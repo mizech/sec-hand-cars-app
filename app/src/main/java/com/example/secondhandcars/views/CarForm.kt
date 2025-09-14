@@ -135,26 +135,30 @@ fun CarForm(viewModel: MainViewModel,
                 }
             }
         }
-        OutlinedButton(onClick = {
-            if (isExistingCar.value == false) {
-                car.value.name = givenName.value
-                car.value.price = givenPrice.value.toDoubleOrNull() ?: 0.0
-                car.value.vid = selectedVendor.value.vid
-                rcScope.launch {
-                    viewModel.insert(newCar = car.value)
-                    navController.navigate(Routes.CarsList.name)
-                }
-            } else {
-                rcScope.launch {
+
+        if (!givenName.value.isEmpty()
+                && !selectedVendor.value.name.isEmpty()) {
+            OutlinedButton(onClick = {
+                if (isExistingCar.value == false) {
                     car.value.name = givenName.value
                     car.value.price = givenPrice.value.toDoubleOrNull() ?: 0.0
                     car.value.vid = selectedVendor.value.vid
-                    viewModel.update(car = car.value)
-                    navController.navigate(Routes.CarsList.name)
+                    rcScope.launch {
+                        viewModel.insert(newCar = car.value)
+                        navController.navigate(Routes.CarsList.name)
+                    }
+                } else {
+                    rcScope.launch {
+                        car.value.name = givenName.value
+                        car.value.price = givenPrice.value.toDoubleOrNull() ?: 0.0
+                        car.value.vid = selectedVendor.value.vid
+                        viewModel.update(car = car.value)
+                        navController.navigate(Routes.CarsList.name)
+                    }
                 }
+            }) {
+                Text(text = "Submit")
             }
-        }) {
-            Text(text = "Submit")
         }
         Spacer(modifier = Modifier.weight(1f))
     }
