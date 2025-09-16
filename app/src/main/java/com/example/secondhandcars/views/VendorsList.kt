@@ -64,24 +64,33 @@ fun VendorsList(viewModel: MainViewModel,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold)
                 }
-                LazyColumn {
-                    items(items = vendorsList) {
-                        Card(modifier = Modifier.padding(bottom = 12.dp).clickable {
-                            navController.navigate(
-                                Routes.VendorDetails.append(arg = it.vid.toString()))
-                        },
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
-                            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                                    .padding(vertical = 12.dp)
-                                    .padding(horizontal = 10.dp)) {
-                                Text(text = it.name,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier)
-                                Text(text = it.country,
-                                    modifier = Modifier)
+                if (viewModel.countOfVendors > 0) {
+                    LazyColumn {
+                        items(items = vendorsList) {
+                            Card(modifier = Modifier.padding(bottom = 12.dp).clickable {
+                                navController.navigate(
+                                    Routes.VendorDetails.append(arg = it.vid.toString()))
+                            },
+                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+                                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(vertical = 12.dp)
+                                        .padding(horizontal = 10.dp)) {
+                                    Text(text = it.name,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier)
+                                    Text(text = it.country,
+                                        modifier = Modifier)
+                                }
                             }
                         }
+                    }
+                } else {
+                    Column(verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "No vendors available.",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp)
                     }
                 }
             }

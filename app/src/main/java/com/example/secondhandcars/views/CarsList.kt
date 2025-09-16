@@ -72,24 +72,33 @@ fun CarList(viewModel: MainViewModel,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold)
                 }
-                LazyColumn {
-                    items(carList) {
-                        Card(modifier = Modifier.padding(bottom = 12.dp).clickable {
-                            navController.navigate(
-                                Routes.CarDetails.append(arg = it.cid.toString()))
-                        },
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
-                            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                                    .padding(vertical = 12.dp)
-                                    .padding(horizontal = 10.dp)) {
-                                Text(text = it.name,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier)
-                                Text(text = formatter.formatDouble(value = it.price),
-                                    modifier = Modifier)
+                if (viewModel.countOfCars > 0) {
+                    LazyColumn {
+                        items(carList) {
+                            Card(modifier = Modifier.padding(bottom = 12.dp).clickable {
+                                navController.navigate(
+                                    Routes.CarDetails.append(arg = it.cid.toString()))
+                            },
+                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+                                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(vertical = 12.dp)
+                                        .padding(horizontal = 10.dp)) {
+                                    Text(text = it.name,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier)
+                                    Text(text = formatter.formatDouble(value = it.price),
+                                        modifier = Modifier)
+                                }
                             }
                         }
+                    }
+                } else {
+                    Column(verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "No cars available.",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp)
                     }
                 }
                 VerticalDivider()

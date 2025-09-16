@@ -14,14 +14,18 @@ class MainViewModel(val vendorDao: VendorDao, val carDao: CarDao): ViewModel() {
     var countOfVendors = 0
         private set
 
+    var countOfCars = 0
+        private set
+
     init {
-        updateCountOfVendors()
+        updateCounts()
     }
 
-    fun updateCountOfVendors() {
+    fun updateCounts() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 countOfVendors = getCountOfVendors()
+                countOfCars = getCountOfCars()
             }
         }
     }
@@ -44,11 +48,12 @@ class MainViewModel(val vendorDao: VendorDao, val carDao: CarDao): ViewModel() {
 
     suspend fun insert(newCar: Car) {
         carDao.insert(car = newCar)
+        updateCounts()
     }
 
     suspend fun insert(newVendor: Vendor) {
         vendorDao.insert(vendor = newVendor)
-        updateCountOfVendors()
+        updateCounts()
     }
 
     suspend fun update(car: Car) {
@@ -60,14 +65,19 @@ class MainViewModel(val vendorDao: VendorDao, val carDao: CarDao): ViewModel() {
 
     suspend fun deleteCarById(id: Long) {
         carDao.deleteCarByID(id = id)
+        updateCounts()
     }
 
     suspend fun deleteVendorById(id: Long) {
         vendorDao.deleteVendorByID(id = id)
-        updateCountOfVendors()
+        updateCounts()
     }
 
     suspend fun getCountOfVendors(): Int {
         return vendorDao.getCountOfVendors()
+    }
+
+    suspend fun getCountOfCars(): Int {
+        return carDao.getCountOfCars()
     }
 }

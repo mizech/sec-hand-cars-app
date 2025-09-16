@@ -40,6 +40,7 @@ fun NavView(viewModel: MainViewModel) {
     var isActionMenuShown = remember {
         mutableStateOf(false)
     }
+    // Todo: Put "No car/vendor available into a composable"
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(actions = {
@@ -84,7 +85,7 @@ fun NavView(viewModel: MainViewModel) {
         })
     }) { innerPadding ->
         NavHost(navController = navController,
-            startDestination = Routes.CarsList.name) {
+            startDestination = Routes.VendorsList.name) {
             composable(route = Routes.CarForm.name) { entry ->
                 val cId = entry.arguments?.getString("cId") ?: ""
                 CarForm(viewModel = viewModel,
